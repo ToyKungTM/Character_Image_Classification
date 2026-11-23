@@ -22,7 +22,7 @@ Bella, Burnice, Ellen, Grace, JaneDoe, King Caesar, Miyabi, Nicole, Wise, Yanagi
 
 ## Method
 
-- Model: AlexNet from torchvision (ImageNet weights), with the last layer replaced to match the number of classes
+- Model: AlexNet from torchvision (ImageNet weights), with the last layer replaced to output 10 classes
 - Augmentation (training set only): horizontal flip, rotation up to ±15 degrees, brightness / contrast / saturation jitter
 - Training: Adam, learning rate 0.0001, batch size 32, up to 25 epochs, 224×224 input
 - Overfitting control:
@@ -32,18 +32,15 @@ Bella, Burnice, Ellen, Grace, JaneDoe, King Caesar, Miyabi, Nicole, Wise, Yanagi
 
 ## Results
 
-Measured on the test split, which was drawn from the same pool of images as the training set.
+Measured on the test split (150 images, 15 per class), which was drawn from the same pool of images as the training set.
 
-| Experiment | Test images | Accuracy | Precision (macro) | Recall (macro) | F1 (macro) |
-|---|---|---|---|---|---|
-| 10 classes | 150 | 0.953 | 0.954 | 0.953 | 0.953 |
-| 11 classes (added "Other") | 165 | 0.879 | 0.885 | 0.879 | 0.880 |
-
-The second experiment adds an "Other" class (100 images of characters outside the 10) so the model can reject unknown characters. Overall accuracy dropped, and the Other class itself scored Precision 0.471 and Recall 0.533.
+| Accuracy | Precision (macro) | Recall (macro) | F1 (macro) |
+|---|---|---|---|
+| 0.953 | 0.954 | 0.953 | 0.953 |
 
 ## Known Limitations
 
-- The 10-class model has no "none of the above" answer. When given a character outside the group, it still picks one of the 10 characters, sometimes with high confidence (96.3% in one test).
+- The model has no "none of the above" answer. When given a character outside the 10, it still picks one of them, sometimes with high confidence (96.3% in one test).
 - The confidence shown is the model's confidence for that image, not its overall accuracy, and it can be overconfident.
 - The test split comes from the same pool as the training data, so results on new images from the internet may be worse than the numbers above.
 - The test set has only 15 images per class, so per-class numbers fluctuate easily.
